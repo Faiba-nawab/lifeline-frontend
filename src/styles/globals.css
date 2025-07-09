@@ -3,13 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --gradient-purple-start: #dfaaff;
+  --gradient-purple-end: #ca82f8;
+  --gradient-3d-start: #d8d6ff;
+  --gradient-3d-end: #b4b6ff;
+  --gradient-classic-start: #eaeaea;
+  --gradient-classic-end: #cfcfcf;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +18,127 @@
   }
 }
 
+/* Global Styles */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  transition: background 0.4s ease, color 0.4s ease;
 }
+
+/* Theme Backgrounds for Full Page */
+body.gradient-purple {
+  background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+}
+
+body.gradient-3d {
+  background: linear-gradient(135deg, var(--gradient-3d-start), var(--gradient-3d-end));
+}
+
+body.gradient-classic {
+  background: linear-gradient(135deg, var(--gradient-classic-start), var(--gradient-classic-end));
+}
+
+/* Theme Backgrounds for Calculator Container */
+.gradient-purple {
+  background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+}
+
+.gradient-3d {
+  background: linear-gradient(135deg, var(--gradient-3d-start), var(--gradient-3d-end));
+}
+
+.gradient-classic {
+  background: linear-gradient(135deg, var(--gradient-classic-start), var(--gradient-classic-end));
+}
+
+/* Button Themes */
+.theme-3d-button {
+  background: linear-gradient(145deg, #f0f0ff, #c7c7ff);
+  border: 1px solid #b4b6ff;
+}
+
+.theme-classic-button {
+  background: linear-gradient(145deg, #f2f2f2, #d4d4d4);
+  border: 1px solid #cfcfcf;
+}
+
+.theme-purple-button {
+  background: linear-gradient(145deg, #f2d8ff, #dca8f8);
+  border: 1px solid #ca82f8;
+}
+
+/* General Button Styling */
+button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Input Fields & Select Dropdowns */
+input,
+select {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 6px;
+  width: 100%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input:hover,
+select:hover {
+  box-shadow: 0 0 8px rgba(218, 112, 214, 0.3);
+}
+
+input:focus,
+select:focus {
+  box-shadow: 0 0 5px rgba(218, 112, 214, 0.5);
+}
+
+/* Fade-In Animation for Smooth UI Transitions */
+.animate-fade-in {
+  animation: fade-in 0.5s ease forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse Animation for Attention-Grabbing Elements */
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
