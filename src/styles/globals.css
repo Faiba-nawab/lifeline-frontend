@@ -1,92 +1,152 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --gradient-purple-start: #dfaaff;
-  --gradient-purple-end: #ca82f8;
-  --gradient-3d-start: #d8d6ff;
-  --gradient-3d-end: #b4b6ff;
-  --gradient-classic-start: #eaeaea;
-  --gradient-classic-end: #cfcfcf;
+  --background: #171717;
+  --foreground: #EADDCB;
+
+  /* Theme 1: Plum & Cream */
+  --plum-bg: #CCC3B9;
+  --plum-face: #CCC3B9;
+  --plum-text: #171717;
+  --plum-border: #b3a58e;
+  --plum-button: #f5eee6;
+
+  /* Theme 2: Mint & Cream */
+  --mint-bg: #668d4fd6;
+  --mint-face: #668d4fd6;
+  --mint-text: #171717;
+  --mint-border: #536e4a;
+  --mint-button: #EADDCB;
+
+  /* Theme 3: Classic */
+  --classic-bg: #5e7d8cf4;
+  --classic-face: #5e7d8cf4;
+  --classic-text: #171717;
+  --classic-button: #e1e1e1;
+  --classic-border: #375463f4;
+
+  --settings-text: #222222;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0A0A0A;
+    --foreground: #EADDCB;
   }
 }
 
-/* Global Styles */
+/* Base body */
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* Theme Backgrounds for Full Page */
-body.gradient-purple {
-  background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+/* Optional fallback if no theme is set */
+body:not([class]) {
+  background-color: var(--background);
 }
 
-body.gradient-3d {
-  background: linear-gradient(135deg, var(--gradient-3d-start), var(--gradient-3d-end));
+/* Theme Backgrounds */
+body.theme-plum-cream {
+  background-color: var(--plum-bg);
+}
+body.theme-mint-cream {
+  background-color: var(--mint-bg);
+}
+body.theme-classic {
+  background-color: var(--classic-bg);
 }
 
-body.gradient-classic {
-  background: linear-gradient(135deg, var(--gradient-classic-start), var(--gradient-classic-end));
+/* Calculator Face */
+.theme-plum-cream .calculator-container {
+  background-color: var(--plum-face);
+  border: 2px solid var(--plum-border);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.4);
+}
+.theme-mint-cream .calculator-container {
+  background-color: var(--mint-face);
+  border: 2px solid var(--mint-border);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.4);
+}
+.theme-classic .calculator-container {
+  background-color: var(--classic-face);
+  border: 2px solid var(--classic-border);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.4);
 }
 
-/* Theme Backgrounds for Calculator Container */
-.gradient-purple {
-  background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+/* Calculator Display */
+.theme-plum-cream .theme-display,
+.theme-mint-cream .theme-display,
+.theme-classic .theme-display {
+  background-color: var(--background);
+  color: var(--foreground);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-.gradient-3d {
-  background: linear-gradient(135deg, var(--gradient-3d-start), var(--gradient-3d-end));
+.theme-display-text {
+  font-weight: bold;
+  font-size: 1.25rem;
 }
 
-.gradient-classic {
-  background: linear-gradient(135deg, var(--gradient-classic-start), var(--gradient-classic-end));
+/* Heart Icon */
+.theme-heart {
+  color: #FFDDEE;
 }
 
-/* Button Themes */
-.theme-3d-button {
-  background: linear-gradient(145deg, #f0f0ff, #c7c7ff);
-  border: 1px solid #b4b6ff;
+/* Theme-Specific Button Colors */
+.theme-plum-cream .theme-button {
+  background-color: var(--plum-button);
+  color: var(--plum-text);
+}
+.theme-mint-cream .theme-button {
+  background-color: var(--mint-button);
+  color: var(--mint-text);
+}
+.theme-classic .theme-button {
+  background-color: var(--classic-button);
+  color: var(--classic-text);
 }
 
-.theme-classic-button {
-  background: linear-gradient(145deg, #f2f2f2, #d4d4d4);
-  border: 1px solid #cfcfcf;
+/* Common Button Styling */
+.theme-button {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3),
+              -2px -2px 5px rgba(255, 255, 255, 0.15);
 }
 
-.theme-purple-button {
-  background: linear-gradient(145deg, #f2d8ff, #dca8f8);
-  border: 1px solid #ca82f8;
-}
-
-/* General Button Styling */
+/* Button Hover/Active Effects */
 button {
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
-
 button:active {
   transform: scale(0.95);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Input Fields & Select Dropdowns */
+/* Input + Select Fields */
 input,
 select {
   border: 1px solid #ccc;
@@ -97,22 +157,24 @@ select {
   outline: none;
   transition: all 0.3s ease;
 }
-
 input:hover,
 select:hover {
   box-shadow: 0 0 8px rgba(218, 112, 214, 0.3);
 }
-
 input:focus,
 select:focus {
   box-shadow: 0 0 5px rgba(218, 112, 214, 0.5);
 }
 
-/* Fade-In Animation for Smooth UI Transitions */
+/* Settings Text (Fixed Color) */
+.settings-page {
+  color: var(--settings-text) !important;
+}
+
+/* Animations */
 .animate-fade-in {
   animation: fade-in 0.5s ease forwards;
 }
-
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -123,12 +185,9 @@ select:focus {
     transform: translateY(0);
   }
 }
-
-/* Pulse Animation for Attention-Grabbing Elements */
 .animate-pulse {
   animation: pulse 2s infinite;
 }
-
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -140,5 +199,3 @@ select:focus {
     transform: scale(1);
   }
 }
-
-

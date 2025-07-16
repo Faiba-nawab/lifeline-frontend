@@ -1,34 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Login({ setUser }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState(""); // <-- added phone
   const [password, setPassword] = useState("");
   const [isNewUser, setIsNewUser] = useState(false);
 
-  useEffect(() => {
-    const savedEmail = localStorage.getItem("email");
-    if (!savedEmail) setIsNewUser(true);
-  }, []);
-
   const handleAuth = async () => {
-    if (!email || !password || (isNewUser && !name)) {
+    if (!email || !password || (isNewUser && (!name || !phone))) {
       alert("Please fill in all fields.");
       return;
     }
 
     try {
       const url = isNewUser
-        ? "http://lifeline-backend-fr78.onrender.com/api/auth/register" // or your Render URL
-        : "http://lifeline-backend-fr78.onrender.com/api/auth/login";
+        ? "https://lifeline-backend-fr78.onrender.com/api/auth/register"
+        : "https://lifeline-backend-fr78.onrender.com/api/auth/login";
+
+      const payload = isNewUser
+        ? { name, email, phone, password }
+        : { email, password };
 
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
+      console.log("Server response:", data); // optional debug
 
       if (data.success) {
         localStorage.setItem("username", data.name || name);
@@ -52,13 +53,22 @@ export default function Login({ setUser }) {
         </h1>
 
         {isNewUser && (
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full Name"
-            className="w-full p-3 rounded-xl border border-gray-300 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
-          />
+          <>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Full Name"
+              className="w-full p-3 rounded-xl border border-gray-300 mb-4 text-black focus:outline-none focus:ring-2 focus:ring-purple-400"
+            />
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Phone Number"
+              className="w-full p-3 rounded-xl border border-gray-300 mb-4 text-black focus:outline-none focus:ring-2 focus:ring-purple-400"
+            />
+          </>
         )}
 
         <input
@@ -66,7 +76,7 @@ export default function Login({ setUser }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email Address"
-          className="w-full p-3 rounded-xl border border-gray-300 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="w-full p-3 rounded-xl border border-gray-300 mb-4 text-black focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
 
         <input
@@ -74,7 +84,7 @@ export default function Login({ setUser }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="w-full p-3 rounded-xl border border-gray-300 mb-6 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="w-full p-3 rounded-xl border border-gray-300 mb-6 text-black focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
 
         <button
