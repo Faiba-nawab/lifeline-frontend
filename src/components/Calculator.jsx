@@ -71,41 +71,46 @@ export default function Calculator() {
     return;
   }
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const message = `📢 Emergency Alert from ${sosContact || "someone"}!\nLocation: https://maps.google.com/?q=${lat},${lng}`;
+ if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const message = `📢 Emergency Alert from ${sosContact || "someone"}!\nLocation: https://maps.google.com/?q=${lat},${lng}`;
 
-        try {
-          const response = await fetch("http://lifeline-backend-fr78.onrender.com/send-sms", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              number: sosNumber,
-              message: message
-            })
-          });
+      try {
+        const response = await fetch("http://lifeline-backend-fr78.onrender.com/send-sms", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            number: sosNumber,
+            message: message
+          })
+        });
 
-          const data = await response.json();
-          console.log("SMS Sent ✅", data);
-          alert("📨 SMS Sent Successfully with location!");
+        const data = await response.json();
+        console.log("SMS Sent ✅", data);
+        alert("📨 SMS Sent Successfully with location!");
 
-        } catch (error) {
-          console.error("SMS Error ❌", error);
-          alert("Failed to send SMS.");
-        }
-      },
-      () => {
-        alert("Failed to get location. Please allow location access.");
+        setTimeout(() => {
+          alert("⚠️ No response from receiver. Calling now...");
+          triggerRealCall(sosContact);
+        }, 60000);
+
+      } catch (err) {
+        console.error("Backend Error:", err);
+        alert("❌ Failed to send SMS.");
       }
-    );
-  } else {
-    alert("Geolocation not supported on this device.");
-  }
+    },
+    () => {
+      alert("Failed to get location. Please allow location access.");
+    }
+  );
+} else {
+  alert("Geolocation not supported on this device.");
+}
 };
 
 
@@ -211,6 +216,35 @@ export default function Calculator() {
       <button onClick={() => { setVaultOpen(true); setIsUnlocked(false); }} className="w-full bg-pink-500 text-white p-2 rounded mb-4 hover:scale-105">
         🔐 Vault Settings
       </button>
+
+      {vaultOpen && !isUnlocked && (
+          <div className="mt-2 p-4 bg-white rounded-xl shadow-xl w-full">
+            <h2 className="text-lg font-bold mb-2">Enter Vault PIN</h2>
+            <input type="password" value={enteredPIN} onChange={(e) => setEnteredPIN(e.target.value)} className="border p-2 rounded w-full mb-2" placeholder="Enter PIN" />
+            <button onClick={checkPIN} className="w-full bg-blue-500 text-white rounded p-2 mb-2">Unlock</button>
+          </div>
+        )}
+
+        {vaultOpen && isUnlocked && (
+          <div className="mt-2 p-4 bg-white rounded-xl shadow-xl w-full">
+            <h2 className="text-lg font-bold mb-2">Vault Shortcuts</h2>
+            {[1, 2, 3, 4].map((_, index) => (
+              <div key={index} className="mb-2">
+                <input placeholder={`Code ${index + 1}`} id={`code${index}`} className="border p-2 rounded w-full mb-1" />
+                <input placeholder={`Nickname ${index + 1}`} id={`nickname${index}`} className="border p-2 rounded w-full mb-1" />
+                <input placeholder={`Contact Number ${index + 1}`} id={`contact${index}`} className="border p-2 rounded w-full mb-2" />
+                <button onClick={() => {
+                  const code = document.getElementById(`code${index}`).value;
+                  const nickname = document.getElementById(`nickname${index}`).value;
+                  const contact = document.getElementById(`contact${index}`).value;
+                  if (code && nickname && contact) addNickname(code, nickname, contact);
+                }} className="w-full bg-green-500 text-white rounded p-2 mb-2">Save</button>
+              </div>
+            ))}
+            <button onClick={changePIN} className="w-full bg-red-400 text-white rounded p-2">Change Vault PIN</button>
+          </div>
+        )}
+
 
       <button onClick={() => setShowSettingsPage(false)} className="mt-4 bg-gray-500 text-white p-2 rounded hover:scale-105">
         Back to Calculator
