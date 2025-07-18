@@ -79,7 +79,7 @@ export default function Calculator() {
       const message = `📢 Emergency Alert from ${sosContact || "someone"}!\nLocation: https://maps.google.com/?q=${lat},${lng}`;
 
       try {
-        const response = await fetch("http://lifeline-backend-fr78.onrender.com/send-sms", {
+        const response = await fetch("http://lifeline-backend-fr78.onrender.com/api/send-sms", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
