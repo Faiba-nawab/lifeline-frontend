@@ -29,11 +29,16 @@ export default function Login({ setUser }) {
       });
 
       const data = await response.json();
-      console.log("Server response:", data); // optional debug
+      console.log("Server response:", data); 
+      console.log("Saving userId to localStorage:", data.userId);
+// optional debug
 
       if (data.success) {
         localStorage.setItem("username", data.name || name);
         localStorage.setItem("email", email);
+        localStorage.setItem("userId", data.userId);
+        console.log("Saving userId to localStorage:", data.userId);
+
         setUser(data.name || name);
         alert(isNewUser ? "Account created!" : `Welcome back, ${data.name}!`);
       } else {

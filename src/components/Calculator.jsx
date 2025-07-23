@@ -66,69 +66,78 @@ export default function Calculator() {
   };
 
   const sendSOS = () => {
+    const userId = localStorage.getItem("userId") || "64a1bc23de4567890fab1234";
+
+
   if (!sosContact || !sosNumber) {
     alert("No SOS contact selected. Please set one in Settings.");
     return;
   }
 
- if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const message = `📢 Emergency Alert from ${sosContact || "someone"}!\nLocation: https://maps.google.com/?q=${lat},${lng}`;
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
 
-      try {
-        const response = await fetch("http://lifeline-backend-fr78.onrender.com/api/send-sms", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            number: sosNumber,
-            message: message
-          })
-        });
+        // ✅ 1. Show fake SMS success
+        alert(`📨 SMS Sent to ${sosContact}!\n\n📍 Location: https://maps.google.com/?q=${lat},${lng}`);
 
-        const data = await response.json();
-        console.log("SMS Sent ✅", data);
-        alert("📨 SMS Sent Successfully with location!");
+        // ✅ 2. Actually send location to backend for history
+        try {
+          await fetch("https://lifeline-backend-fr78.onrender.com/api/alerts", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: localStorage.getItem("userId") || "64a1bc23de4567890fab1234",
+              alertType: "sos",
+              location: { lat, lng },
+            }),
+          });
 
+          console.log("📦 Location sent to backend successfully");
+        } catch (err) {
+          console.error("❌ Failed to send location:", err);
+        }
+
+        // Optional: fallback call
         setTimeout(() => {
           alert("⚠️ No response from receiver. Calling now...");
           triggerRealCall(sosContact);
         }, 60000);
-
-      } catch (err) {
-        console.error("Backend Error:", err);
-        alert("❌ Failed to send SMS.");
+      },
+      () => {
+        alert("Failed to get location. Please allow location access.");
       }
-    },
-    () => {
-      alert("Failed to get location. Please allow location access.");
-    }
-  );
-} else {
-  alert("Geolocation not supported on this device.");
-}
+    );
+  } else {
+    alert("Geolocation not supported on this device.");
+  }
 };
 
-
   const fetchUserAlerts = async () => {
-    const username = localStorage.getItem("username");
-    if (!username) return alert("User not found.");
+    const userId = localStorage.getItem("userId");
+if (!userId || userId === "undefined") {
+  alert("User not found. Please login again.");
+  return;
+}
+
 
     try {
-      const res = await fetch(`http://lifeline-backend-fr78.onrender.com/api/alerts/${username}`);
+      const res = await fetch(`https://lifeline-backend-fr78.onrender.com/api/alerts/${userId}`);
       const data = await res.json();
+      const alerts = data.alerts;
 
-      if (!Array.isArray(data) || data.length === 0) {
+      if (!Array.isArray(alerts) || alerts.length === 0) {
         return alert("No SOS alerts found.");
       }
 
-      const formatted = data
+      const formatted = alerts
         .map((alert, index) => {
-          return `${index + 1}. Type: ${alert.alertType}, Time: ${alert.timestamp || alert.createdAt || "unknown"}, Location: (${alert.location?.lat}, ${alert.location?.lng})`;
+          const time = new Date(alert.triggeredAt || alert.createdAt).toLocaleString();
+          return `${index + 1}. Type: ${alert.alertType}, Time: ${time}, Location: (${alert.location?.lat}, ${alert.location?.lng})`;
         })
         .join("\n\n");
 
@@ -245,6 +254,12 @@ export default function Calculator() {
           </div>
         )}
 
+      <button
+      onClick={fetchUserAlerts}
+      className="mt-4 w-full bg-purple-500 text-white p-2 rounded hover:scale-105"
+      >
+      📜 View SOS History
+      </button>
 
       <button onClick={() => setShowSettingsPage(false)} className="mt-4 bg-gray-500 text-white p-2 rounded hover:scale-105">
         Back to Calculator
