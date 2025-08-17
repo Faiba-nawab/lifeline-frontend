@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import toast from "react-hot-toast";
 
 export default function NotepadSettings() {
   const router = useRouter();
@@ -41,14 +40,14 @@ export default function NotepadSettings() {
     if (tempPattern) {
       localStorage.setItem("sosPattern", tempPattern);
     }
-    toast.success("✅ Settings saved successfully!");
+    alert("✅ Settings saved successfully!");
     router.push("/notepad");
   };
   
   const resetPattern = () => {
     localStorage.removeItem("sosPattern");
     setTempPattern("");
-    toast.success("🔄 Pattern reset!");
+    alert("🔄 Pattern reset!");
   };
 
   const PatternCanvas = ({ mode }) => {
@@ -71,7 +70,7 @@ export default function NotepadSettings() {
           setTempPattern(patternStr); // Just store temporarily
           alert("Pattern recorded — click Save Settings to confirm.");
         } else {
-          toast.error("⚠ Pattern too short!");
+          alert("⚠ Pattern too short!");
         }
       }
     };

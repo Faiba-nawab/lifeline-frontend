@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { FiSettings } from "react-icons/fi";
-import toast from "react-hot-toast";
 
 export default function Notepad() {
   const router = useRouter();
@@ -33,7 +32,7 @@ export default function Notepad() {
       window.location.href = `tel:${contact.number}`;
     }
     else{
-      toast.error("⚠ No phone number saved for this contact!");
+      alert("⚠ No phone number saved for this contact!");
     }
   };
 
@@ -45,7 +44,7 @@ export default function Notepad() {
 
    const handleSOS = () => {
     if (!navigator.geolocation) {
-      toast.success("Geolocation not supported");
+      alert("Geolocation not supported");
       return;
     }
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -55,7 +54,7 @@ export default function Notepad() {
      if (sosContact?.number) {
       window.open(`https://wa.me/${sosContact.number}?text=${encodeURIComponent(locationText)}`, "_blank");
     } else {
-      toast.error("No SOS contact (Contact 3) saved");
+     alert("No SOS contact (Contact 3) saved");
     }
   });
 };

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Calculator from "../components/Calculator";
 import Login from "../components/Login";
 import Notepad from "./notepad";
+import WeatherWidget from "../components/WeatherWidget";
 
 export default function Home() {
   const [user, setUser] = useState("");
@@ -12,13 +13,12 @@ export default function Home() {
     if (savedUser) {
       setUser(savedUser);
 
-      const count = parseInt(localStorage.getItem("launchCount") || "0");
-      if (count === 0) {
-        localStorage.setItem("launchCount", "1");
-        setScreen("calculator");
-      } else {
-        setScreen("notepad");
-      }
+      let count = parseInt(localStorage.getItem("launchCount") || "0");
+       const screens = ["calculator", "notepad", "weather" , "clock"];
+      const nextScreen = screens[count % screens.length];
+
+      setScreen(nextScreen);
+      localStorage.setItem("launchCount", (count + 1).toString());
     }
   }, []);
 
@@ -26,5 +26,10 @@ export default function Home() {
 
   if (!screen) return null; // Still deciding
 
-  return screen === "calculator" ? <Calculator user={user} /> : <Notepad/>;
+      if (screen === "calculator") return <Calculator user={user} />;
+      if (screen === "notepad") return <Notepad />;
+      if (screen === "weather") return <WeatherWidget />;
+      if (screen === "clock") return <Clock />;
+
+    return null;
 }
