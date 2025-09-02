@@ -107,7 +107,7 @@ export default function Gallery() {
         </div>
       </header>
 
-      <div className="statusbar">{status}</div>
+      {/*<div className="statusbar">{status}</div>*/}
 
       <div className="wrap">
        {/* <div className="controls">
