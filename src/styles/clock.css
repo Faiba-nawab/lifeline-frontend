@@ -80,9 +80,17 @@ body {
   cursor: pointer;
   
   /*added*/
-  top: 20px;
-  left: 20px;
+  top: 10px;
+  left: 10px;
   font-size: 24px;  
-  z-index: 10;
+  z-index: 9999;
 }
 
+/*added*/
+@media (max-width: 480px) {
+  .gear-icon {
+    top: 5px;
+    right: 5px;
+    font-size: 20px;
+  }
+}
