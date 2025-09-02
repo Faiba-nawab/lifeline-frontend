@@ -3,7 +3,7 @@ import Calculator from "../components/Calculator";
 import Login from "../components/Login";
 import Notepad from "./notepad";
 import WeatherWidget from "../components/WeatherWidget";
-import Clock from "../components/clock";
+//import Clock from "../components/clock";
 import Gallery from "../components/Gallery";
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       setUser(savedUser);
 
       let count = parseInt(localStorage.getItem("launchCount") || "0");
-       const screens = ["calculator", "notepad", "weather" , "clock" , "gallery"];
+       const screens = ["calculator", "notepad", "weather" /*, "clock"*/ , "gallery"];
       const nextScreen = screens[count % screens.length];
 
       setScreen(nextScreen);
@@ -31,7 +31,7 @@ export default function Home() {
       if (screen === "calculator") return <Calculator user={user} />;
       if (screen === "notepad") return <Notepad />;
       if (screen === "weather") return <WeatherWidget />;
-      if (screen === "clock") return <Clock />;
+      //if (screen === "clock") return <Clock />;
       if (screen === "gallery") return <Gallery />;
 
     return null;
