@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaCog, FaHeartbeat, FaExclamationTriangle } from "react-icons/fa";
 
+
 export default function Calculator() {
   const [display, setDisplay] = useState("");
   const [theme, setTheme] = useState("theme-plum-cream");
@@ -295,7 +296,8 @@ if (!userId || userId === "undefined") {
     <span className="theme-display-text">{display || "0"}</span>
   </div>
 
-  <div className="grid grid-cols-4 gap-2">
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px" }}>
+
     {"AC,+-,%,/,7,8,9,*,4,5,6,-,1,2,3,+,0,.,SOS,=".split(",").map((btn, i) => (
       <motion.button
         whileTap={{ scale: 0.9 }}

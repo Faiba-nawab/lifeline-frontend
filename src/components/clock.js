@@ -1,8 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import toast, { Toaster } from "react-hot-toast";
-
-import styles from "../styles/clock.module.css";
+import { toast } from "react-toastify"
 
 export default function Home() {
   const [time, setTime] = useState(new Date());
@@ -207,7 +205,16 @@ const handleNumberMouseUp = (num) => {
     return;
   }
 
-  let savedContacts = JSON.parse(localStorage.getItem("contacts")) || [];
+  /*let savedContacts = JSON.parse(localStorage.getItem("contacts")) || [];*/
+  
+  //added
+  let savedContacts;
+try {
+  const parsed = JSON.parse(localStorage.getItem("contacts"));
+  savedContacts = Array.isArray(parsed) ? parsed : [];
+} catch {
+  savedContacts = [];
+}
 
   savedContacts = savedContacts.filter(c => c.nickname && c.number);
   
@@ -310,7 +317,8 @@ const handleNumberMouseUp = (num) => {
      <h3>Saved Contacts:</h3>
 
       <ul>
-  {contacts.map((c, idx) => (
+  {(Array.isArray(contacts) ? contacts : []).map((c, idx) => ( 
+    //above line changed from contacts.map((c, idx)
     <li key={idx}>
       {c.nickname} ({c.number}) → Long: {c.longPressNumber}, Tap: {c.tapSequence}
       <button onClick={() => handleDeleteContact(idx)}>❌</button>
@@ -330,65 +338,64 @@ const handleNumberMouseUp = (num) => {
 
   return (
 
-    <div className={styles["clock-container"]}>
-      <div className={styles["gear-icon"]} onClick={() => setIsSettingsOpen(true)}>⚙️</div>
-      <div className={styles.clock}>
+    <div className="clock-container">
+      <div className="gear-icon" onClick={() => setIsSettingsOpen(true)}>⚙️</div>
+      <div className="clock">
 
-        <div className={styles["inner-circle"]}></div>
+        <div className="inner-circle"></div>
 
-        <div className={`${styles.number} ${styles.n12}`}onMouseDown={() => handleNumberMouseDown("XII")}
+        <div className="number n12" onMouseDown={() => handleNumberMouseDown("XII")}
   onMouseUp={() => handleNumberMouseUp("XII")}
   onClick={() => handleNumberTap("XII")}>XII</div>
 
-        <div className={`${styles.number} ${styles.n1}`} onMouseDown={() => handleNumberMouseDown("I")}
+        <div className="number n1" onMouseDown={() => handleNumberMouseDown("I")}
   onMouseUp={() => handleNumberMouseUp("I")}
   onClick={() => handleNumberTap("I")}>I</div>
 
-        <div className={`${styles.number} ${styles.n2}`} onMouseDown={() => handleNumberMouseDown("II")}
+        <div className="number n2" onMouseDown={() => handleNumberMouseDown("II")}
   onMouseUp={() => handleNumberMouseUp("II")}
   onClick={() => handleNumberTap("II")}>II</div>
 
-        <div className={`${styles.number} ${styles.n3}`} onMouseDown={() => handleNumberMouseDown("III")}
+        <div className="number n3" onMouseDown={() => handleNumberMouseDown("III")}
   onMouseUp={() => handleNumberMouseUp("III")}
   onClick={() => handleNumberTap("III")}>III</div>
 
-        <div className={`${styles.number} ${styles.n4}`} onMouseDown={() => handleNumberMouseDown("IV")}
+        <div className="number n4" onMouseDown={() => handleNumberMouseDown("IV")}
   onMouseUp={() => handleNumberMouseUp("IV")}
   onClick={() => handleNumberTap("IV")}>IV</div>
 
-        <div className={`${styles.number} ${styles.n5}`} onMouseDown={() => handleNumberMouseDown("V")}
+        <div className="number n5" onMouseDown={() => handleNumberMouseDown("V")}
   onMouseUp={() => handleNumberMouseUp("V")}
   onClick={() => handleNumberTap("V")}>V</div>
 
-        <div className={`${styles.number} ${styles.n6}`} onMouseDown={() => handleNumberMouseDown("VI")}
+        <div className="number n6" onMouseDown={() => handleNumberMouseDown("VI")}
   onMouseUp={() => handleNumberMouseUp("VI")}
   onClick={() => handleNumberTap("VI")}>VI</div>
 
-        <div className={`${styles.number} ${styles.n7}`} onMouseDown={() => handleNumberMouseDown("VII")}
+        <div className="number n7" onMouseDown={() => handleNumberMouseDown("VII")}
   onMouseUp={() => handleNumberMouseUp("VII")}
   onClick={() => handleNumberTap("VII")}>VII</div>
 
-        <div className={`${styles.number} ${styles.n8}`} onMouseDown={() => handleNumberMouseDown("VIII")}
+        <div className="number n8" onMouseDown={() => handleNumberMouseDown("VIII")}
   onMouseUp={() => handleNumberMouseUp("VIII")}
   onClick={() => handleNumberTap("VIII")}>VIII</div>
 
-        <div className={`${styles.number} ${styles.n9}`} onMouseDown={() => handleNumberMouseDown("IX")}
+        <div className="number n9" onMouseDown={() => handleNumberMouseDown("IX")}
   onMouseUp={() => handleNumberMouseUp("IX")}
   onClick={() => handleNumberTap("IX")}>IX</div>
 
-        <div className={`${styles.number} ${styles.n10}`} onMouseDown={() => handleNumberMouseDown("X")}
+        <div className="number n10" onMouseDown={() => handleNumberMouseDown("X")}
   onMouseUp={() => handleNumberMouseUp("X")}
   onClick={() => handleNumberTap("X")}>X</div>
 
-        <div className={`${styles.number} ${styles.n11}`} onMouseDown={() => handleNumberMouseDown("XI")}
+        <div className="number n11" onMouseDown={() => handleNumberMouseDown("XI")}
   onMouseUp={() => handleNumberMouseUp("XI")}
   onClick={() => handleNumberTap("XI")}>XI</div>
 
-        <div className={`${styles.hand} ${styles.hour}`} id="hour"></div>
-<div className={`${styles.hand} ${styles.minute}`} id="minute"></div>
-<div className={`${styles.hand} ${styles.second}`} id="second"></div>
-
-        <div className={styles.center}></div>
+        <div className="hand hour" id="hour"></div>
+        <div className="hand minute" id="minute"></div>
+        <div className="hand second" id="second"></div>
+        <div className="center"></div>
       </div>
 </div>
   );

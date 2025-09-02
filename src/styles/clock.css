@@ -1,10 +1,9 @@
-.clock-container {
-  background: #171818;;
+body {
+  background: color #868888;;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  position: relative;
 }
 .clock {
   position: relative;
@@ -75,13 +74,7 @@
   transform: translate(-50%, -50%);
 }
 .gear-icon {
-   position: absolute;
-  left: calc(50% - 250px); /* shifts to the left of the clock */
-  top: 30%;
-  transform: translateY(-50%);
-  font-size: 28px;
-  color: #c99737;
+  position: absolute;
   cursor: pointer;
-  z-index: 10;
 }
 
