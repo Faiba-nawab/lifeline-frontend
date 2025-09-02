@@ -93,7 +93,7 @@ export default function Gallery() {
 
   useEffect(() => {
     loadSettings();
-    setStatus("Ready. For best accuracy, enable GPS.");
+    {/*setStatus("Ready. For best accuracy, enable GPS.");*/}
   }, []);
 
   return (
@@ -110,6 +110,11 @@ export default function Gallery() {
       <div className="statusbar">{status}</div>
 
       <div className="wrap">
+       {/* <div className="controls">
+          <button className="btn secondary" onClick={() =>
+            alert("Triggers:\n• Tap top-left → WhatsApp SOS\n• Triple-tap → Call\n• Pattern → SOS+Call")
+          }>How to trigger SOS</button>
+        </div> */}
 
         {/* Gallery Grid */}
         <div className="grid">
