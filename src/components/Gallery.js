@@ -98,6 +98,7 @@ export default function Gallery() {
 
   return (
     <div className="gallery-app">
+      {/*trigger pop up*/}
       <header>
         <div className="title">Gallery</div>
         <div>
@@ -109,11 +110,6 @@ export default function Gallery() {
       <div className="statusbar">{status}</div>
 
       <div className="wrap">
-        <div className="controls">
-          <button className="btn secondary" onClick={() =>
-            alert("Triggers:\n• Tap top-left → WhatsApp SOS\n• Triple-tap → Call\n• Pattern → SOS+Call")
-          }>How to trigger SOS</button>
-        </div>
 
         {/* Gallery Grid */}
         <div className="grid">
@@ -122,7 +118,7 @@ export default function Gallery() {
               <img src={src} alt={`photo-${idx+1}`} />
               {idx === 0 && (
                 <>
-                  <div className="hint">Top-left → WhatsApp SOS</div>
+                 {/* <div className="hint">Top-left → WhatsApp SOS</div>*/}
                   <div className="hotspot" onClick={async (e) => {
                     e.stopPropagation();
                     const loc = await getBestPosition();
