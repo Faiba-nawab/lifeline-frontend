@@ -7,8 +7,10 @@ body {
 }
 .clock {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 40vw; /*added*/
+  max-width: 400px; /*changed width to max-width*/
+  height: 40vw; /*added*/
+  max-height: 400px; /*changed height to max-height*/
   background-color: #691932;
   border-radius: 50%;
   border: 8px solid black;
@@ -76,5 +78,11 @@ body {
 .gear-icon {
   position: absolute;
   cursor: pointer;
+  
+  /*added*/
+  top: 20px;
+  left: 20px;
+  font-size: 24px;  
+  z-index: 10;
 }
 
